@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum PlantStages {Seed, Sprout, Flowered, Dead}
 public class PlantController : MonoBehaviour
@@ -27,23 +28,51 @@ public class PlantController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Debug.Log("Trigger Entered");
         if(collision.gameObject.tag == "Player")
         {
-            Debug.Log("Player Found");
-            cyclesToSprout--;
-            if(cyclesToSprout == 0)
-            {
-                GrowToNextStage();
-                UpdateColor();        
-            }
-
+            waterContent--;
+            Debug.Log("Water content: " + waterContent);
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        
+       if(Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("watering the plant");
+            waterContent++;
+        }
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            if(TryToPick())
+            {
+                GameObject.Find("PlantCounter").GetComponent<Text>().text = "Plants Raised: 1";
+                Destroy(gameObject);
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        cyclesToSprout--;
+        if(waterContent <= 0)
+        {
+            Die();
+        }
+        else if (cyclesToSprout == 0)
+        {
+            GrowToNextStage();
+            UpdateColor();
+        }
+    }
+
+    bool TryToPick()
+    {
+        if(currentStage == PlantStages.Flowered)
+        {
+            return true;
+        }
+        return false;
     }
 
     void GrowToNextStage()
@@ -85,5 +114,11 @@ public class PlantController : MonoBehaviour
                 renderer.color = Color.grey;
                 break;
         }
+    }
+
+    void Die()
+    {
+        currentStage = PlantStages.Dead;
+        cyclesToSprout = 10;
     }
 }

@@ -7,6 +7,7 @@ public class WheelController : MonoBehaviour
     public float rotationSpeed;
     public float maxSpeed;
     float inertia;
+    public float friction;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,5 +27,6 @@ public class WheelController : MonoBehaviour
             inertia = Mathf.Max(0, inertia + rotationAmount);
         }
         transform.Rotate(0, 0, inertia);
+        if (inertia > 0) inertia -= friction;
     }
 }
