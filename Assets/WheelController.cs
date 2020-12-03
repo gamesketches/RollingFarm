@@ -20,12 +20,10 @@ public class WheelController : MonoBehaviour
         if(rotationAmount > 0)
         {
             inertia = Mathf.Min(maxSpeed, inertia + rotationAmount);
-            Debug.Log("Speeding up " + inertia.ToString());
         }
         else
         {
             inertia = Mathf.Max(0, inertia + rotationAmount);
-            Debug.Log("Speeding Down " + inertia.ToString());
         }
         transform.Rotate(0, 0, inertia);
     }
