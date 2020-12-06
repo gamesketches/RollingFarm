@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum PlantStages {Seed, Sprout, Flowered, Dead}
+public enum PlantStages {Seed, Sprout, Full, Flowered, Dead}
 public class PlantController : MonoBehaviour
 {
     public int cyclesToSprout;
     int waterContent;
     PlantStages currentStage;
-    SpriteRenderer renderer;
+    SpriteRenderer plantRenderer;
 
     // Start is called before the first frame update
     void Start()
     {
         waterContent = 2;
         currentStage = PlantStages.Seed;
-        renderer = GetComponent<SpriteRenderer>();
+        plantRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         UpdateColor();
     }
 
@@ -55,7 +55,6 @@ public class PlantController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("exiting");
         cyclesToSprout--;
         if(waterContent <= 0)
         {
@@ -80,6 +79,7 @@ public class PlantController : MonoBehaviour
 
     void GrowToNextStage()
     {
+        Debug.Log("Growing!");
         switch(currentStage)
         {
             case PlantStages.Seed:
@@ -87,6 +87,10 @@ public class PlantController : MonoBehaviour
                 cyclesToSprout = 2;
                 break;
             case PlantStages.Sprout:
+                currentStage = PlantStages.Full;
+                cyclesToSprout = 2;
+                break;
+            case PlantStages.Full:
                 currentStage = PlantStages.Flowered;
                 cyclesToSprout = 4;
                 break;
@@ -98,33 +102,15 @@ public class PlantController : MonoBehaviour
                 Destroy(gameObject);
                 break;
         }
+        plantRenderer.sprite = Resources.Load<Sprite>("PlantStages/" + currentStage.ToString());
     }
 
     void UpdateColor()
     {
-        switch(currentStage)
-        {
-            case PlantStages.Seed:
-                renderer.color = Color.black;
-                break;
-            case PlantStages.Sprout:
-                renderer.color = Color.yellow;
-                break;
-            case PlantStages.Flowered:
-                renderer.color = Color.green;
-                break;
-            case PlantStages.Dead:
-                renderer.color = Color.grey;
-                break;
-        }
-        Debug.Log(renderer.color);
         float h, s, v;
-        Color.RGBToHSV(renderer.color, out h, out s, out v);
-        Debug.Log(v);
+        Color.RGBToHSV(plantRenderer.color, out h, out s, out v);
         v = Mathf.Lerp(0f, 1f, waterContent / 5f);
-        Debug.Log(v);
-        renderer.color = Color.HSVToRGB(h,s,v);
-        Debug.Log(renderer.color);
+        plantRenderer.color = Color.HSVToRGB(h,s,v);
     }
 
     void Die()
