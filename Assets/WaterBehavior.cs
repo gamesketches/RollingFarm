@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WaterBehavior : MonoBehaviour
 {
-    public static float dripTime = 0.5f;
+    public static float dripTime = 1f;
     public static float fallingSpeed = 0.1f;
     float dripTimer = 0;
     // Start is called before the first frame update

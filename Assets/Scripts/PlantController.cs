@@ -8,6 +8,8 @@ public class PlantController : MonoBehaviour
 {
     public int cyclesToSprout;
     int waterContent;
+    public float waterAbsorptionTime;
+    float waterAbsorptionTimer;
     PlantStages currentStage;
     SpriteRenderer plantRenderer;
 
@@ -17,12 +19,18 @@ public class PlantController : MonoBehaviour
         waterContent = 2;
         currentStage = PlantStages.Seed;
         plantRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        waterAbsorptionTimer = waterAbsorptionTime;
         UpdateColor();
     }
 
     // Update is called once per frame
     void Update()
     {
+        waterAbsorptionTimer -= Time.deltaTime;
+        if(waterAbsorptionTimer < 0) {
+            AbsorbWater();
+            waterAbsorptionTimer = waterAbsorptionTime;
+        }
 
     }
 
@@ -56,17 +64,7 @@ public class PlantController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "Player") {
-            cyclesToSprout--;
-            if(waterContent <= 0)
-            {
-                Debug.Log("plant dead :(");
-                Die();
-            }
-            else if (cyclesToSprout == 0)
-            {
-                GrowToNextStage();
-            }
-            UpdateColor();
+            AbsorbWater();
         }
     }
 
@@ -78,6 +76,20 @@ public class PlantController : MonoBehaviour
         }
         return false;
     }
+
+    void AbsorbWater() {
+        cyclesToSprout--;
+            if(waterContent <= 0)
+            {
+                Debug.Log("plant dead :(");
+                Die();
+            }
+            else if (cyclesToSprout == 0)
+            {
+                GrowToNextStage();
+            }
+            UpdateColor();
+     }
 
     void GrowToNextStage()
     {
