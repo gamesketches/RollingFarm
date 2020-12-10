@@ -24,11 +24,12 @@ public class PlayerBehavior : MonoBehaviour
     IEnumerator SprinkleWater() {
         GameObject water = Instantiate<GameObject>(waterPrefab);
         water.transform.position = transform.position;
-        for(float t = 0; t < 0.5f; t += Time.deltaTime) {
+        yield return null;
+        /*for(float t = 0; t < 0.5f; t += Time.deltaTime) {
             water.transform.position -= new Vector3(0, 0.01f, 0);
             yield return null;
         }
-        Destroy(water);
+        Destroy(water);*/
     }
 
 }

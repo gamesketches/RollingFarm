@@ -28,22 +28,22 @@ public class PlantController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("Trigger Entered");
         if(collision.gameObject.tag == "Player")
         {
             waterContent--;
             Debug.Log("Water content: " + waterContent);
+        } else if(collision.gameObject.tag == "Water") {
+            waterContent++;
+            Debug.Log("Watering the plant");
+            Destroy(collision.gameObject);
+            UpdateColor();
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-       if(Input.GetKeyDown(KeyCode.Space))
-        {
-            Debug.Log("watering the plant");
-            waterContent++;
-            UpdateColor();
-        }
-        if(Input.GetKeyDown(KeyCode.P))
+       if(Input.GetKeyDown(KeyCode.P))
         {
             if(TryToPick())
             {
@@ -55,17 +55,19 @@ public class PlantController : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        cyclesToSprout--;
-        if(waterContent <= 0)
-        {
-            Debug.Log("plant dead :(");
-            Die();
-        }
-        else if (cyclesToSprout == 0)
-        {
-            GrowToNextStage();
-        }
+        if(collision.gameObject.tag == "Player") {
+            cyclesToSprout--;
+            if(waterContent <= 0)
+            {
+                Debug.Log("plant dead :(");
+                Die();
+            }
+            else if (cyclesToSprout == 0)
+            {
+                GrowToNextStage();
+            }
             UpdateColor();
+        }
     }
 
     bool TryToPick()
