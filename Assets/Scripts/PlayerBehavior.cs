@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
     public GameObject waterPrefab;
+    public Transform wheel;
     // Start is called before the first frame update
     void Start()
     {
@@ -17,6 +18,7 @@ public class PlayerBehavior : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Space)) {
             StartCoroutine(SprinkleWater());
         }
+        transform.Translate(wheel.position.x - transform.position.x, 0, 0);
     }
 
     IEnumerator SprinkleWater() {
