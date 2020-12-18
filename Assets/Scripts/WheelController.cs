@@ -30,8 +30,6 @@ public class WheelController : MonoBehaviour
         transform.Rotate(0, 0, -inertia);
         Vector3 nextWheelPosition = new Vector3(transform.position.x + (inertia * movement), transform.position.y, 0);
         transform.position = nextWheelPosition;
-        nextWheelPosition.z = Camera.main.transform.position.z;
-        Camera.main.transform.position = nextWheelPosition;
         if (inertia > 0) inertia -= friction;
     }
 }
