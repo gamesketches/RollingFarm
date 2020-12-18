@@ -53,11 +53,13 @@ public class PlantController : MonoBehaviour
     {
        if(Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("Trying to pick");
             if(TryToPick())
             {
                 GameObject.Find("PlantCounter").GetComponent<Text>().text = "Plants Raised: 1";
                 Destroy(gameObject);
             }
+            else Debug.Log("Failed to pick");
         }
     }
 
