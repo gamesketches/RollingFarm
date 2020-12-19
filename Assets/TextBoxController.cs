@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TextBoxController : MonoBehaviour
 {
     public string[] script;
-    public float printSpeed;
+    public int charsPerSecond;
     public KeyCode nextKey;
     Text textField;
     Image endStringIcon;
@@ -36,7 +36,7 @@ public class TextBoxController : MonoBehaviour
             string nextLine = script[i];
             for(int j = 0; j < nextLine.Length; j++) {
                 textField.text += nextLine[j];
-                yield return new WaitForSeconds(printSpeed);
+                yield return new WaitForSeconds(1f / charsPerSecond);
             }
             endStringIcon.enabled = true;
             while(!Input.GetKeyDown(nextKey)) yield return null;

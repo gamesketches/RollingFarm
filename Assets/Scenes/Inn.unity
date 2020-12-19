@@ -413,7 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   script: []
-  printSpeed: 0.01
+  charsPerSecond: 30
   nextKey: 32
 --- !u!114 &1333486007
 MonoBehaviour:
